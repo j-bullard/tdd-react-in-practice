@@ -52,3 +52,44 @@ test("contains an add recipe button", async () => {
   button = screen.queryByRole("button", { name: "Add Recipe" });
   expect(button).toBeNull();
 });
+
+test("shows a new recipe after adding the recipe", async () => {
+  // render the landing page
+  render(<App />);
+
+  // click the add recipe button
+  const addRecipeButton = screen.getByRole("button", { name: "Add Recipe" });
+  userEvent.click(addRecipeButton);
+
+  // wait for the recipe for to display
+  // await screen.findByRole("form", undefined, { timeout: 3000 });
+
+  // get recipe input elements
+  const recipeName = await screen.findByRole("textbox", {
+    name: /Recipe Name/i,
+  });
+  const recipeInstructions = screen.getByRole("textbox", {
+    name: /Recipe Instructions/i,
+  });
+
+  // type recipe
+  userEvent.type(recipeName, "Habenero Mango Chicken Curry");
+  userEvent.type(
+    recipeInstructions,
+    "Mix some habeneros with mango and chicken in a curry sauce"
+  );
+
+  // submit the recipe
+  const recipeSubmitBtn = screen.getByRole("button", { name: "Save Recipe" });
+  userEvent.click(recipeSubmitBtn);
+
+  // wait for the recipe to be displayed on the screen
+  await screen.findByText("Habenero Mango Chicken Curry");
+
+  expect(screen.getByText("Habenero Mango Chicken Curry")).toBeInTheDocument();
+  expect(
+    screen.getByText(
+      "Mix some habeneros with mango and chicken in a curry sauce"
+    )
+  ).toBeInTheDocument();
+});
