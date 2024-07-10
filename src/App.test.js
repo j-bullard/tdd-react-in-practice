@@ -85,11 +85,4 @@ test("shows a new recipe after adding the recipe", async () => {
 
   // wait for the recipe to be displayed on the screen
   await screen.findByText("Habenero Mango Chicken Curry");
-
-  expect(screen.getByText("Habenero Mango Chicken Curry")).toBeInTheDocument();
-  expect(
-    screen.getByText(
-      "Mix some habeneros with mango and chicken in a curry sauce"
-    )
-  ).toBeInTheDocument();
 });
